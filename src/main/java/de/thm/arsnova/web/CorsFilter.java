@@ -40,11 +40,13 @@ public class CorsFilter extends org.springframework.web.filter.CorsFilter {
 		config = new CorsConfiguration();
 		config.setAllowedOrigins(origins);
 		config.addAllowedHeader("Accept");
+		config.addAllowedHeader("Arsnova-Token-Auth");
 		config.addAllowedHeader("Content-Type");
 		config.addAllowedHeader("X-Requested-With");
 		config.addAllowedMethod("GET");
 		config.addAllowedMethod("POST");
 		config.addAllowedMethod("PUT");
+		config.addAllowedMethod("PATCH");
 		config.addAllowedMethod("DELETE");
 		config.setAllowCredentials(true);
 		source = new UrlBasedCorsConfigurationSource();
