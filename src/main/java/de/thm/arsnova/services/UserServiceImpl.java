@@ -223,7 +223,7 @@ public class UserServiceImpl extends DefaultEntityServiceImpl<UserProfile> imple
 		}
 		User user = (User) authentication.getPrincipal();
 		String jwt = authentication instanceof JwtToken ?
-				(String) authentication.getCredentials() : jwtService.createSignedToken(user);
+				jwtService.createSignedToken(user) : (String) authentication.getCredentials();
 
 		de.thm.arsnova.entities.ClientAuthentication clientAuthentication =
 				new de.thm.arsnova.entities.ClientAuthentication(user.getId(), user.getUsername(),
