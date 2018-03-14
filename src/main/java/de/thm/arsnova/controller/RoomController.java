@@ -17,8 +17,13 @@
  */
 package de.thm.arsnova.controller;
 
+import de.thm.arsnova.entities.ClientAuthentication;
 import de.thm.arsnova.entities.Room;
+import de.thm.arsnova.entities.UserProfile;
 import de.thm.arsnova.services.RoomService;
+import de.thm.arsnova.services.UserService;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,10 +33,12 @@ public class RoomController extends AbstractEntityController<Room> {
 	protected static final String REQUEST_MAPPING = "/room";
 
 	private RoomService roomService;
+	private UserService userService;
 
-	public RoomController(final RoomService roomService) {
+	public RoomController(final RoomService roomService, final UserService userService) {
 		super(roomService);
 		this.roomService = roomService;
+		this.userService = userService;
 	}
 
 	@Override
@@ -42,5 +49,13 @@ public class RoomController extends AbstractEntityController<Room> {
 	@Override
 	protected String resolveAlias(final String shortId) {
 		return roomService.getIdByShortId(shortId);
+	}
+
+	@PostMapping(DEFAULT_ID_MAPPING + "/join")
+	public UserProfile join(@PathVariable final String id) {
+		final UserProfile userProfile = userService.getCurrentUserProfile();
+		final Room room = roomService.get(id);
+		userService.addRoomToHistory(userProfile, room);
+		return userService.getCurrentUserProfile();
 	}
 }
