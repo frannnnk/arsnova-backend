@@ -124,6 +124,13 @@ public class CommentServiceImpl extends DefaultEntityServiceImpl<Comment> implem
 	}
 
 	@Override
+	/* TODO: move caching to DefaultEntityServiceImpl */
+	//@Caching(evict = @CacheEvict(cacheNames = "comments", key = "#result.id"))
+	public void prepareCreate(final Comment comment) {
+		comment.setCreatorId(userService.getCurrentUser().getId());
+	}
+
+	@Override
 	@PreAuthorize("isAuthenticated()")
 	public List<Comment> getByRoomId(final String roomId, final int offset, final int limit) {
 		final Room room = roomRepository.findOne(roomId);
