@@ -19,7 +19,7 @@ package de.thm.arsnova.controller.v2;
 
 import de.thm.arsnova.controller.PaginationController;
 import de.thm.arsnova.entities.ChoiceAnswer;
-import de.thm.arsnova.entities.ChoiceQuestionContent;
+import de.thm.arsnova.entities.ChoiceContent;
 import de.thm.arsnova.entities.TextAnswer;
 import de.thm.arsnova.entities.migration.FromV2Migrator;
 import de.thm.arsnova.entities.migration.ToV2Migrator;
@@ -56,7 +56,6 @@ import javax.naming.OperationNotSupportedException;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -457,7 +456,7 @@ public class ContentController extends PaginationController {
 		if (content.getFormat().equals(de.thm.arsnova.entities.Content.Format.TEXT)) {
 			return toV2Migrator.migrate((TextAnswer) answer);
 		} else {
-			return toV2Migrator.migrate((ChoiceAnswer) answer, (ChoiceQuestionContent) content);
+			return toV2Migrator.migrate((ChoiceAnswer) answer, (ChoiceContent) content);
 		}
 	}
 
@@ -484,9 +483,9 @@ public class ContentController extends PaginationController {
 			@RequestParam(value = "all", required = false, defaultValue = "false") final Boolean allAnswers,
 			final HttpServletResponse response) {
 		final de.thm.arsnova.entities.Content content = contentService.get(contentId);
-		if (content instanceof ChoiceQuestionContent) {
+		if (content instanceof ChoiceContent) {
 			return toV2Migrator.migrate(answerService.getAllStatistics(contentId),
-					(ChoiceQuestionContent) content, content.getState().getRound());
+					(ChoiceContent) content, content.getState().getRound());
 		} else {
 			List<de.thm.arsnova.entities.TextAnswer> answers;
 			if (allAnswers) {
@@ -523,7 +522,7 @@ public class ContentController extends PaginationController {
 		if (answerV3 instanceof TextAnswer) {
 			return toV2Migrator.migrate((TextAnswer) answerService.saveAnswer(contentId, answerV3));
 		} else {
-			return  toV2Migrator.migrate((ChoiceAnswer) answerService.saveAnswer(contentId, answerV3), (ChoiceQuestionContent) content);
+			return  toV2Migrator.migrate((ChoiceAnswer) answerService.saveAnswer(contentId, answerV3), (ChoiceContent) content);
 		}
 	}
 
@@ -543,7 +542,7 @@ public class ContentController extends PaginationController {
 		if (answerV3 instanceof TextAnswer) {
 			return toV2Migrator.migrate((TextAnswer) answerService.updateAnswer(answerV3));
 		} else {
-			return  toV2Migrator.migrate((ChoiceAnswer) answerService.updateAnswer(answerV3), (ChoiceQuestionContent) content);
+			return  toV2Migrator.migrate((ChoiceAnswer) answerService.updateAnswer(answerV3), (ChoiceContent) content);
 		}
 	}
 
@@ -667,7 +666,7 @@ public class ContentController extends PaginationController {
 				.map(a -> {
 					if (a instanceof ChoiceAnswer) {
 						return toV2Migrator.migrate(
-								(ChoiceAnswer) a, (ChoiceQuestionContent) contentService.get(a.getContentId()));
+								(ChoiceAnswer) a, (ChoiceContent) contentService.get(a.getContentId()));
 					} else {
 						return toV2Migrator.migrate((TextAnswer) a);
 					}

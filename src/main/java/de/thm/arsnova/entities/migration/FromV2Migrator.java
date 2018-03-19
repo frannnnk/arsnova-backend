@@ -18,7 +18,7 @@
 package de.thm.arsnova.entities.migration;
 
 import de.thm.arsnova.entities.ChoiceAnswer;
-import de.thm.arsnova.entities.ChoiceQuestionContent;
+import de.thm.arsnova.entities.ChoiceContent;
 import de.thm.arsnova.entities.TextAnswer;
 import de.thm.arsnova.entities.UserProfile;
 import de.thm.arsnova.entities.migration.v2.*;
@@ -188,18 +188,18 @@ public class FromV2Migrator {
 			case V2_TYPE_VOTE:
 			case V2_TYPE_SCHOOL:
 			case V2_TYPE_YESNO:
-				ChoiceQuestionContent choiceQuestionContent = new ChoiceQuestionContent();
-				to = choiceQuestionContent;
+				ChoiceContent choiceContent = new ChoiceContent();
+				to = choiceContent;
 				to.setFormat(formatMapping.get(from.getQuestionType()));
-				choiceQuestionContent.setMultiple(V2_TYPE_MC.equals(from.getQuestionType()));
+				choiceContent.setMultiple(V2_TYPE_MC.equals(from.getQuestionType()));
 				for (int i = 0; i < from.getPossibleAnswers().size(); i++) {
 					de.thm.arsnova.entities.migration.v2.AnswerOption fromOption = from.getPossibleAnswers().get(i);
-					ChoiceQuestionContent.AnswerOption toOption = new ChoiceQuestionContent.AnswerOption();
+					ChoiceContent.AnswerOption toOption = new ChoiceContent.AnswerOption();
 					toOption.setLabel(fromOption.getText());
 					toOption.setPoints(fromOption.getValue());
-					choiceQuestionContent.getOptions().add(toOption);
+					choiceContent.getOptions().add(toOption);
 					if (fromOption.isCorrect()) {
-						choiceQuestionContent.getCorrectOptionIndexes().add(i);
+						choiceContent.getCorrectOptionIndexes().add(i);
 					}
 				}
 

@@ -23,7 +23,7 @@ import de.thm.arsnova.config.TestPersistanceConfig;
 import de.thm.arsnova.config.TestSecurityConfig;
 import de.thm.arsnova.entities.AnswerStatistics;
 import de.thm.arsnova.entities.ChoiceAnswer;
-import de.thm.arsnova.entities.ChoiceQuestionContent;
+import de.thm.arsnova.entities.ChoiceContent;
 import de.thm.arsnova.entities.Content;
 import de.thm.arsnova.entities.migration.v2.Answer;
 import org.junit.Test;
@@ -67,18 +67,18 @@ public class ToV2MigratorTest {
 
 	@Test
 	public void testMigrateAnswerMultipleResponse() {
-		final List<ChoiceQuestionContent.AnswerOption> options = new ArrayList<>();
-		final ChoiceQuestionContent.AnswerOption option1 = new ChoiceQuestionContent.AnswerOption();
+		final List<ChoiceContent.AnswerOption> options = new ArrayList<>();
+		final ChoiceContent.AnswerOption option1 = new ChoiceContent.AnswerOption();
 		option1.setLabel(OPTION1_LABEL);
 		options.add(option1);
-		ChoiceQuestionContent.AnswerOption option2 = new ChoiceQuestionContent.AnswerOption();
+		ChoiceContent.AnswerOption option2 = new ChoiceContent.AnswerOption();
 		option2.setLabel(OPTION2_LABEL);
 		options.add(option2);
-		ChoiceQuestionContent.AnswerOption option3 = new ChoiceQuestionContent.AnswerOption();
+		ChoiceContent.AnswerOption option3 = new ChoiceContent.AnswerOption();
 		option3.setLabel(OPTION3_LABEL);
 		options.add(option3);
 
-		final ChoiceQuestionContent contentV3 = new ChoiceQuestionContent();
+		final ChoiceContent contentV3 = new ChoiceContent();
 		contentV3.setFormat(Content.Format.CHOICE);
 		contentV3.setMultiple(true);
 		contentV3.setRoomId(ROOM_ID);
@@ -114,19 +114,19 @@ public class ToV2MigratorTest {
 		roundStatsV3.setAbstentionCount(7);
 		statsV3.setRoundStatistics(Collections.singletonList(roundStatsV3));
 
-		final ChoiceQuestionContent.AnswerOption option1 = new ChoiceQuestionContent.AnswerOption();
+		final ChoiceContent.AnswerOption option1 = new ChoiceContent.AnswerOption();
 		option1.setLabel(OPTION1_LABEL);
-		ChoiceQuestionContent.AnswerOption option2 = new ChoiceQuestionContent.AnswerOption();
+		ChoiceContent.AnswerOption option2 = new ChoiceContent.AnswerOption();
 		option2.setLabel(OPTION2_LABEL);
-		ChoiceQuestionContent.AnswerOption option3 = new ChoiceQuestionContent.AnswerOption();
+		ChoiceContent.AnswerOption option3 = new ChoiceContent.AnswerOption();
 		option3.setLabel(OPTION3_LABEL);
-		ChoiceQuestionContent.AnswerOption option4 = new ChoiceQuestionContent.AnswerOption();
+		ChoiceContent.AnswerOption option4 = new ChoiceContent.AnswerOption();
 		option3.setLabel(OPTION4_LABEL);
-		final List<ChoiceQuestionContent.AnswerOption> options = Arrays.asList(new ChoiceQuestionContent.AnswerOption[] {
+		final List<ChoiceContent.AnswerOption> options = Arrays.asList(new ChoiceContent.AnswerOption[] {
 			option1, option2, option3, option4
 		});
 
-		final ChoiceQuestionContent contentV3 = new ChoiceQuestionContent();
+		final ChoiceContent contentV3 = new ChoiceContent();
 		contentV3.getState().setRound(ROUND);
 		contentV3.setOptions(options);
 		contentV3.setAbstentionsAllowed(true);

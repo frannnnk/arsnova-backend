@@ -19,7 +19,7 @@ package de.thm.arsnova.services;
 
 import de.thm.arsnova.entities.Answer;
 import de.thm.arsnova.entities.AnswerStatistics;
-import de.thm.arsnova.entities.ChoiceQuestionContent;
+import de.thm.arsnova.entities.ChoiceContent;
 import de.thm.arsnova.entities.Content;
 import de.thm.arsnova.entities.Room;
 import de.thm.arsnova.entities.TextAnswer;
@@ -151,7 +151,7 @@ public class AnswerServiceImpl extends DefaultEntityServiceImpl<Answer>
 	@Override
 	@PreAuthorize("isAuthenticated()")
 	public AnswerStatistics getStatistics(final String contentId, final int round) {
-		final ChoiceQuestionContent content = (ChoiceQuestionContent) contentRepository.findOne(contentId);
+		final ChoiceContent content = (ChoiceContent) contentRepository.findOne(contentId);
 		if (content == null) {
 			throw new NotFoundException();
 		}

@@ -18,7 +18,7 @@
 package de.thm.arsnova.entities.migration;
 
 import de.thm.arsnova.entities.AnswerStatistics;
-import de.thm.arsnova.entities.ChoiceQuestionContent;
+import de.thm.arsnova.entities.ChoiceContent;
 import de.thm.arsnova.entities.RoomStatistics;
 import de.thm.arsnova.entities.UserProfile;
 import de.thm.arsnova.entities.migration.v2.*;
@@ -179,17 +179,17 @@ public class ToV2Migrator {
 		to.setText(from.getBody());
 		to.setAbstention(from.isAbstentionsAllowed());
 
-		if (from instanceof ChoiceQuestionContent) {
-			final ChoiceQuestionContent fromChoiceQuestionContent = (ChoiceQuestionContent) from;
+		if (from instanceof ChoiceContent) {
+			final ChoiceContent fromChoiceContent = (ChoiceContent) from;
 			switch (from.getFormat()) {
 				case CHOICE:
-					to.setQuestionType(fromChoiceQuestionContent.isMultiple() ? V2_TYPE_MC : V2_TYPE_ABCD);
+					to.setQuestionType(fromChoiceContent.isMultiple() ? V2_TYPE_MC : V2_TYPE_ABCD);
 					break;
 				case BINARY:
 					to.setQuestionType(V2_TYPE_YESNO);
 					break;
 				case SCALE:
-					final int optionCount = fromChoiceQuestionContent.getOptions().size();
+					final int optionCount = fromChoiceContent.getOptions().size();
 					/* The number of options for vote/school format is hard-coded by the legacy client */
 					if (optionCount == 5) {
 						to.setQuestionType(V2_TYPE_VOTE);
@@ -207,11 +207,11 @@ public class ToV2Migrator {
 			}
 			final List<AnswerOption> toOptions = new ArrayList<>();
 			to.setPossibleAnswers(toOptions);
-			for (int i = 0; i < fromChoiceQuestionContent.getOptions().size(); i++) {
+			for (int i = 0; i < fromChoiceContent.getOptions().size(); i++) {
 				AnswerOption option = new AnswerOption();
-				option.setText(fromChoiceQuestionContent.getOptions().get(i).getLabel());
-				option.setValue(fromChoiceQuestionContent.getOptions().get(i).getPoints());
-				option.setCorrect(fromChoiceQuestionContent.getCorrectOptionIndexes().contains(i));
+				option.setText(fromChoiceContent.getOptions().get(i).getLabel());
+				option.setValue(fromChoiceContent.getOptions().get(i).getPoints());
+				option.setCorrect(fromChoiceContent.getCorrectOptionIndexes().contains(i));
 				toOptions.add(option);
 			}
 		} else {
@@ -237,7 +237,7 @@ public class ToV2Migrator {
 	}
 
 	public Answer migrate(final de.thm.arsnova.entities.ChoiceAnswer from,
-			final de.thm.arsnova.entities.ChoiceQuestionContent content, final Optional<UserProfile> creator) {
+						  final ChoiceContent content, final Optional<UserProfile> creator) {
 		final Answer to = new Answer();
 		copyCommonProperties(from, to);
 		to.setQuestionId(from.getContentId());
@@ -261,7 +261,7 @@ public class ToV2Migrator {
 	}
 
 	public String migrateChoice(final List<Integer> selectedChoiceIndexes,
-			final List<ChoiceQuestionContent.AnswerOption> options) {
+			final List<ChoiceContent.AnswerOption> options) {
 		List<String> answers = new ArrayList<>();
 		for (int i = 0; i < options.size(); i++) {
 			answers.add(selectedChoiceIndexes.contains(i) ? "1" : "0");
@@ -271,7 +271,7 @@ public class ToV2Migrator {
 	}
 
 	public Answer migrate(final de.thm.arsnova.entities.ChoiceAnswer from,
-			final de.thm.arsnova.entities.ChoiceQuestionContent content) {
+			final ChoiceContent content) {
 		return migrate(from, content, Optional.empty());
 	}
 
@@ -344,7 +344,7 @@ public class ToV2Migrator {
 	}
 
 	public List<Answer> migrate(final AnswerStatistics from,
-			final de.thm.arsnova.entities.ChoiceQuestionContent content, int round) {
+								final ChoiceContent content, int round) {
 		if (round < 1 || round > content.getState().getRound()) {
 			throw new IllegalArgumentException("Invalid value for round");
 		}
@@ -371,7 +371,7 @@ public class ToV2Migrator {
 		} else {
 			choices = new LinkedHashMap<>();
 			int i = 0;
-			for (ChoiceQuestionContent.AnswerOption option : content.getOptions()) {
+			for (ChoiceContent.AnswerOption option : content.getOptions()) {
 				choices.put(option.getLabel(), stats.getIndependentCounts().get(i));
 				i++;
 			}

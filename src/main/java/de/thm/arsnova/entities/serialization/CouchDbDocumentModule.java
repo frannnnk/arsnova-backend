@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import de.thm.arsnova.entities.Answer;
 import de.thm.arsnova.entities.ChoiceAnswer;
-import de.thm.arsnova.entities.ChoiceQuestionContent;
+import de.thm.arsnova.entities.ChoiceContent;
 import de.thm.arsnova.entities.Content;
 import de.thm.arsnova.entities.Entity;
 import de.thm.arsnova.entities.TextAnswer;
@@ -37,7 +37,7 @@ public class CouchDbDocumentModule extends SimpleModule {
 		context.setMixInAnnotations(de.thm.arsnova.entities.migration.v2.Entity.class, CouchDbDocumentV2MixIn.class);
 		context.registerSubtypes(
 				new NamedType(Content.class, Content.class.getSimpleName()),
-				new NamedType(ChoiceQuestionContent.class, ChoiceQuestionContent.class.getSimpleName()),
+				new NamedType(ChoiceContent.class, ChoiceContent.class.getSimpleName()),
 				new NamedType(Answer.class, Answer.class.getSimpleName()),
 				new NamedType(ChoiceAnswer.class, ChoiceAnswer.class.getSimpleName()),
 				new NamedType(TextAnswer.class, TextAnswer.class.getSimpleName()));

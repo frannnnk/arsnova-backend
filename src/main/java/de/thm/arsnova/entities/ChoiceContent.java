@@ -7,7 +7,7 @@ import org.springframework.core.style.ToStringCreator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChoiceQuestionContent extends Content {
+public class ChoiceContent extends Content {
 	public static class AnswerOption {
 		private String label;
 		private int points;
